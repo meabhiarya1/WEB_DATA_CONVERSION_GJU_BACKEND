@@ -30,9 +30,6 @@ const getCsvData = async (req, res, next) => {
       ],
     });
 
-    // console.log(fileData.templete.patternDefinition)
-    // console.log(fileData.templete.blankDefination)
-    // return
 
     if (!fileData) {
       return res.status(404).json({ error: "File not found" });
@@ -221,22 +218,12 @@ const getCsvData = async (req, res, next) => {
     const minToMaxData = jsonData.slice(minIndex, maxIndex + 1);
 
     minToMaxData.forEach((obj, rowIndex) => {
-      // for (const key in obj) {
-      // if (key === "BARCODE" && obj[key] === "3082*53") {
-      //     console.log(obj);
-      //     break;
-      // }
-      // }
+     
       let wantToPush = false;
 
       colConditions.forEach((conditions, colIndex) => {
         const csvColName = conditions.dataValues.key;
-        // if (
-        // obj[csvColName] ===
-        // imageColKeyContainer[imageColKeyContainer.length - 1]
-        // ) {
-        // return;
-        // }
+      
         const checkingConditions = conditionFunc(
           obj[csvColName],
           conditions.legal,
