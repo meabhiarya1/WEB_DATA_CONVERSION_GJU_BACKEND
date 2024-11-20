@@ -16,7 +16,7 @@
 
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("omrscannerduplex", "root", "root", {
+const sequelize = new Sequelize("gjuwebdataconversion", "root", "root", {
   dialect: "mysql",
   host: "localhost",
   logging: false,

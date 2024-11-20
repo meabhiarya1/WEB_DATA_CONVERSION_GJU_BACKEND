@@ -45,6 +45,12 @@ app.use(upload);
 app.use(compareCsv);
 app.use(templeteRoutes);
 
+// Handle all other routes and serve 'index.html'
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+
 // Define associations with cascading deletes
 Templete.hasMany(MetaData, {
   foreignKey: {
