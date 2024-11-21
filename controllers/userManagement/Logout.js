@@ -2,6 +2,7 @@ const User = require("../../models/User");
 const UserActivity = require("../../models/UserActivity");
 
 const logout = async (req, res) => {
+  console.log("LOGOUT -- ")
   const { userId } = req.body; // Assuming userId is passed in the request body or you can get it from token
 
   try {
