@@ -19,7 +19,7 @@ const Assigndata = require("./models/TempleteModel/assigndata");
 const RowIndexData = require("./models/TempleteModel/rowIndexData");
 const ImageDataPath = require("./models/TempleteModel/templeteImages");
 const MappedData = require("./models/TempleteModel/mappedData");
-// const builtPath = path.join(__dirname, "./build");
+const builtPath = path.join(__dirname, "./build");
 
 //middlewares
 app.use(cors());
@@ -37,7 +37,7 @@ const imageDirectoryPath = path.join(
 // Serve static files from the 'extractedFiles' directory
 app.use("/images", express.static(imageDirectoryPath));
 app.use("/images", express.static(path.join(__dirname, "extractedFiles")));
-// app.use(express.static(builtPath));
+app.use(express.static(builtPath));
 
 
 app.use("/users", userRoutes);
@@ -46,9 +46,9 @@ app.use(compareCsv);
 app.use(templeteRoutes);
 
 // Handle all other routes and serve 'index.html'
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 
 // Define associations with cascading deletes
