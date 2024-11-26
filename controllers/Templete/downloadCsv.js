@@ -38,18 +38,18 @@ const downloadCsv = async (req, res) => {
     jsonData.shift();
 
     // Columns to remove
-    const columnsToRemove = [
-      "User Details",
-      "Previous Values",
-      "Updated Values",
-      "Updated Col. Name",
-    ];
+    // const columnsToRemove = [
+    //   "User Details",
+    //   "Previous Values",
+    //   "Updated Values",
+    //   "Updated Col. Name",
+    // ];
 
     // Filter out the specified columns
     const filteredJsonData = jsonData.map((row) => {
-      columnsToRemove.forEach((col) => {
-        delete row[col];
-      });
+      // columnsToRemove.forEach((col) => {
+      //   delete row[col];
+      // });
       return row;
     });
 
