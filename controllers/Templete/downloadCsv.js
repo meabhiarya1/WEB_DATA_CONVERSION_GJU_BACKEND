@@ -20,11 +20,7 @@ const downloadCsv = async (req, res) => {
     }
 
     const originalFilename = fileData.csvFile;
-    const originalFilePath = path.join(
-      __dirname,
-      "../../csvFile",
-      originalFilename
-    );
+    const originalFilePath = path.join(__dirname, "../../csvFile", originalFilename);
 
     try {
       await fs.access(originalFilePath); // Check if the file exists
@@ -34,42 +30,24 @@ const downloadCsv = async (req, res) => {
 
     const jsonData = await csvToJson(originalFilePath);
 
-    // Remove the first row
+    // Remove the first row (optional)
     jsonData.shift();
 
-    // Columns to remove
-    // const columnsToRemove = [
-    //   "User Details",
-    //   "Previous Values",
-    //   "Updated Values",
-    //   "Updated Col. Name",
-    // ];
+    // Convert JSON data back to CSV
+    const csvData = jsonToCsv(jsonData);
 
-    // Filter out the specified columns
-    const filteredJsonData = jsonData.map((row) => {
-      // columnsToRemove.forEach((col) => {
-      //   delete row[col];
-      // });
-      return row;
-    });
+    // Create a temporary file
+    console.log()
+    const tempFilePath = path.join(__dirname, "../../csvFile", `temp_${originalFilename}`);
+    await fs.writeFile(tempFilePath, csvData, { encoding: "utf8" });
 
-    // Convert filtered JSON data back to CSV
-    const csvData = jsonToCsv(filteredJsonData);
-    // const csvData = jsonToCsv(jsonData);
+    // Set headers to include the original filename
+    console.log(originalFilename + " ")
+    res.setHeader("Content-Disposition", `attachment; filename="${originalFilename}"`);
+    res.setHeader("Content-Type", "text/csv");
 
-    // Create a filename with the current date and time
-    const timestamp = new Date().toISOString().replace(/[-:.]/g, "");
-    const copiedFilename = `copy-${timestamp}.csv`;
-    const copiedFilePath = path.join(
-      __dirname,
-      "../../csvFile",
-      copiedFilename
-    );
-
-    await fs.writeFile(copiedFilePath, csvData, { encoding: "utf8" });
-
-    // Send the copied file to the client for download
-    return res.download(copiedFilePath, copiedFilename, async (err) => {
+    // Send the file to the client for download
+    res.download(tempFilePath, async (err) => {
       if (err) {
         console.error("Error sending file:", err);
         return res
@@ -77,18 +55,16 @@ const downloadCsv = async (req, res) => {
           .json({ error: "An error occurred while processing your request" });
       }
 
-      // Optionally, delete the copied file after sending it to the client
+      // Delete the temporary file after sending it to the client
       try {
-        await fs.unlink(copiedFilePath);
+        await fs.unlink(tempFilePath);
       } catch (unlinkErr) {
         console.error("Error deleting temporary file:", unlinkErr);
       }
     });
   } catch (error) {
     console.error("Error downloading CSV file:", error);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while processing your request" });
+    res.status(500).json({ error: "An error occurred while processing your request" });
   }
 };
 
