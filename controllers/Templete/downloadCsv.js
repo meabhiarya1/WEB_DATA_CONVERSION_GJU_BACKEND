@@ -105,7 +105,7 @@ module.exports = downloadXlsx;
 //     const originalFilePath = path.join(__dirname, "../../csvFile", originalFilename);
 
 //     try {
-//       await fs.access(originalFilePath); // Check if the file exists
+//       await fs.access(originalFilePath);
 //     } catch (err) {
 //       return res.status(404).json({ error: "File not found" });
 //     }
@@ -118,9 +118,7 @@ module.exports = downloadXlsx;
 //     // Convert JSON data back to CSV
 //     const csvData = jsonToCsv(jsonData);
 
-//     // Create a temporary file
-//     console.log()
-//     const tempFilePath = path.join(__dirname, "../../csvFile", `temp_${originalFilename}`);
+//   const tempFilePath = path.join(__dirname, "../../csvFile", `temp_${originalFilename}`);
 //     await fs.writeFile(tempFilePath, csvData, { encoding: "utf8" });
 
 //     // Set headers to include the original filename
